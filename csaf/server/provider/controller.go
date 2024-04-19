@@ -6,7 +6,7 @@
 // SPDX-FileCopyrightText: 2021 German Federal Office for Information Security (BSI) <https://www.bsi.bund.de>
 // Software-Engineering: 2021 Intevation GmbH <https://intevation.de>
 
-package main
+package provider
 
 import (
 	"embed"
@@ -44,9 +44,9 @@ type controller struct {
 	tmpl *template.Template
 }
 
-// newController assigns the given configs to a controller variable and parses the html template
+// NewController assigns the given configs to a controller variable and parses the html template
 // if the config value "NoWebUI" is true. It returns the controller variable and nil, otherwise error.
-func newController(cfg *config) (*controller, error) {
+func NewController(cfg *config) (*controller, error) {
 
 	c := controller{cfg: cfg}
 	var err error
@@ -62,7 +62,7 @@ func newController(cfg *config) (*controller, error) {
 
 // bind binds the paths with the corresponding http.handler and wraps it with the respective middleware,
 // according to the "NoWebUI" config value.
-func (c *controller) bind(pim *pathInfoMux) {
+func (c *controller) Bind(pim *pathInfoMux) {
 	if !c.cfg.NoWebUI {
 		pim.handleFunc("/", c.auth(c.index))
 		pim.handleFunc("/upload", c.auth(c.web(c.upload, "upload.html")))

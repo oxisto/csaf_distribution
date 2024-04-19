@@ -18,6 +18,7 @@ import (
 
 	"github.com/jessevdk/go-flags"
 
+	"github.com/csaf-poc/csaf_distribution/v3/csaf/server/provider"
 	"github.com/csaf-poc/csaf_distribution/v3/util"
 )
 
@@ -46,7 +47,7 @@ func main() {
 
 	ensureCGI()
 
-	cfg, err := loadConfig()
+	cfg, err := provider.LoadConfig()
 	if err != nil {
 		cgi.Serve(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, "Something went wrong. Check server logs for more details",
@@ -55,12 +56,12 @@ func main() {
 		log.Fatalf("error: %v\n", err)
 	}
 
-	c, err := newController(cfg)
+	c, err := provider.NewController(cfg)
 	if err != nil {
 		log.Fatalf("error: %v\n", err)
 	}
-	pim := newPathInfoMux()
-	c.bind(pim)
+	pim := provider.NewPathInfoMux()
+	c.Bind(pim)
 
 	if err := cgi.Serve(pim); err != nil {
 		log.Fatalf("error: %v\n", err)

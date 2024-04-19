@@ -6,7 +6,7 @@
 // SPDX-FileCopyrightText: 2021 German Federal Office for Information Security (BSI) <https://www.bsi.bund.de>
 // Software-Engineering: 2021 Intevation GmbH <https://intevation.de>
 
-package main
+package provider
 
 import (
 	"fmt"
@@ -215,12 +215,12 @@ func (cfg *config) DynamicCategories() []string {
 	return cats
 }
 
-// loadConfig extracts the config values from the config file. The path to the
+// LoadConfig extracts the config values from the config file. The path to the
 // file is taken either from environment variable "CSAF_CONFIG" or from the
 // defined default path in "defaultConfigPath".
 // Default values are set in case some are missing in the file.
 // It returns these values in a struct and nil if there is no error.
-func loadConfig() (*config, error) {
+func LoadConfig() (*config, error) {
 	path := os.Getenv(configEnv)
 	if path == "" {
 		path = defaultConfigPath
